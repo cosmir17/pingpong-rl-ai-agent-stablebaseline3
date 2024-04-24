@@ -8,8 +8,6 @@ from tensorflow import keras
 from skimage.metrics import structural_similarity as ssim
 import random
 import cv2
-from tensorflow.keras.preprocessing.image import save_img
-# from tensorflow.keras.preprocessing.image import load_img
 
 
 os_name = platform.system()
@@ -31,8 +29,6 @@ def capture_window():
         sct_img = sct.grab(monitor)
         img = Image.frombytes('RGB', sct_img.size, sct_img.bgra, 'raw', 'BGRX')
         img = tf.image.rgb_to_grayscale(img)
-        # img_cv2 = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-        # return img_cv2
         return img
         
 
@@ -42,23 +38,16 @@ def which_stage(img):
     game_stuck_without_ball_cropped = game_stuck_without_ball[top_left[1]:bottom_right[1], top_left[0]:bottom_right[0]]
     
     current_centre_image = img[top_left[1]:bottom_right[1], top_left[0]:bottom_right[0]]
-    # save_img('current_centre_image_0.png', current_centre_image)
-    # save_img('game_stuck_without_ball_cropped_0.png', game_stuck_without_ball_cropped)
     
     current_centre_image = current_centre_image.numpy()
     current_centre_image = current_centre_image.squeeze()
     current_centre_image = (current_centre_image * 255).astype(np.uint8)
     
     mse_value = mse(game_stuck_without_ball_cropped, current_centre_image)
-    # print(mse_value)
     img_cut_in_half = img[:img.shape[0]//2, :, :]
     img_cut_in_half_np = img_cut_in_half.numpy()
     img_cut_in_half_np = np.squeeze(img_cut_in_half_np) # remove last dimension
-    # img_cut_in_half_np = keras.preprocessing.image.img_to_array(img_cut_in_half)
-    # game_start_page_loaded = load_img("game_start_page_loaded.png", color_mode='grayscale')
-    # game_start_page_loaded_np = keras.preprocessing.image.img_to_array(game_start_page_loaded)
-    # img_cut_in_half_gray = cv2.cvtColor(img_cut_in_half_np, cv2.COLOR_BGR2GRAY)
-    
+
     game_start_page_loaded_resized = cv2.resize(game_start_page_loaded, (img_cut_in_half.shape[1], img_cut_in_half.shape[0]))
     game_start_page_loaded_gray = cv2.cvtColor(game_start_page_loaded_resized, cv2.COLOR_BGR2GRAY)
 
@@ -74,7 +63,6 @@ def which_stage(img):
 # 2994 -> ball stuck right bottom
 
 # 2998 -> game before start page
-# 
 
 def capture_display():
     with mss() as sct:
@@ -100,28 +88,3 @@ def mse(imageA, imageB):
     err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
     err /= float(imageA.shape[0] * imageA.shape[1])
     return err
-
-# img = capture_window()
-# print(which_stage(img))
-# img_cut_in_half = img[:img.shape[0]//2, :, :]
-# save_img('stuck_ball_right_bottom.png', img)
-
-# cropped_image = game_stuck_without_ball[15:424, 85:530]
-# cropped_image = game_stuck_without_ball[40:400, 40:400]
-
-# height, width, channels = game_stuck_without_ball.shape
-
-# print(f"Image Width: {width}")
-# print(f"Image Height: {height}")
-# print(f"Number of Channels: {channels}")
-
-# Display the cropped image
-# cv2.imshow("Cropped Image", game_stuck_without_ball)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
-
-
-
-    # game_start_page_loaded_resized = cv2.resize(game_start_page_loaded, (img_cut_in_half.shape[1], img_cut_in_half.shape[0]))
-    # game_start_page_loaded_gray = cv2.cvtColor(game_start_page_loaded_resized, cv2.COLOR_BGR2GRAY)
-    # img_cut_in_half_gray = cv2.cvtColor(img_cut_in_half, cv2.COLOR_BGR2GRAY)

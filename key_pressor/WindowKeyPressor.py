@@ -2,7 +2,6 @@ from pynput.keyboard import Key, Controller
 from key_pressor.AbstractKeyPressor import AbstractKeyPressor
 import time
 
-
 class WindowKeyPressor(AbstractKeyPressor):
 
     @property

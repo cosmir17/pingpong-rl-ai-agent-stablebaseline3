@@ -3,7 +3,6 @@ from key_pressor.WindowKeyPressor import WindowKeyPressor
 from key_pressor.AbstractKeyPressor import AbstractKeyPressor
 import platform
 
-
 def create_key_pressor() -> AbstractKeyPressor:
     os_name = platform.system()
     if os_name == "Darwin":

@@ -4,9 +4,7 @@ from gymnasium import spaces
 from nq_screen_extractor import *
 import pyautogui
 from tensorflow import keras
-import matplotlib.pyplot as plt
 from score_activity_extractor import detect_minus_sign
-from tensorflow.keras.preprocessing.image import save_img
 
 class NQEnv(gymnasium.Env):
     metadata = {'render.modes': ['console']}
@@ -116,15 +114,8 @@ class NQEnv(gymnasium.Env):
         stage_enum = which_stage(screenshot)
         img_processed = tf.image.resize(screenshot, (40, 40))
         img_processed = tf.transpose(img_processed, (2, 0, 1))
-        # img_processed_squeezed = tf.squeeze(img_processed, axis=0)
-        # plt.imshow(img_processed_squeezed, cmap='gray')
-        # plt.show()
-        # img_processed = keras.preprocessing.image.img_to_array(img_processed)
         img_processed = keras.preprocessing.image.img_to_array(img_processed)
         img_processed = img_processed.astype(np.uint8)
-        # img_processed = cv2.cvtColor(screenshot, cv2.COLOR_BGR2GRAY)
-        # img_processed = cv2.resize(img_processed, (100, 60), interpolation=cv2.INTER_AREA)
-        # img_processed = np.expand_dims(img_processed, axis=-1)
         self._state = img_processed
         self._stage = stage_enum
         return screenshot
@@ -133,30 +124,3 @@ class NQEnv(gymnasium.Env):
         time.sleep(0.05)
         pyautogui.click()
         time.sleep(0.005)
-
-
-    # def press_key_return_penalty(self, action):
-    #     upper_line = 10
-    #     lower_line = 500
-    #     _, y = pyautogui.position()
-
-    #     if action == 0 : #up
-    #         if y > upper_line:
-    #             pyautogui.move(0, -70)
-    #             return 0
-    #         else:
-    #             return (upper_line - y) * -0.02
-
-    #     if action == 1: #down
-    #         if y < lower_line:
-    #             pyautogui.move(0, 70)
-    #             return 0
-    #         else:
-    #             return (y - lower_line) * -0.02
-
-    #     if action == 2:
-    #         time.sleep(0.0001)
-    #         return 0
-    #     else:
-    #         time.sleep(0.0001)
-    #         return 0

@@ -3,7 +3,6 @@ import os
 import psutil
 from pynput import keyboard
 
-
 def on_press(key):
     if key == keyboard.Key.esc:
         print('ESC pressed')
